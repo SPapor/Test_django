@@ -3,24 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM MVP</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>SalesFlow CRM</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/slate/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 0.3px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: #32383e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: #fff !important;
+        }
+
+        .table {
+            vertical-align: middle;
+        }
+        .table th {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #777;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5 border-bottom border-secondary">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'client_list' %}">⚡ CRM MVP</a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'client_list' %}">Клієнти</a>
+            <a class="navbar-brand" href="{% url 'client_list' %}">
+                SalesFlow
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'client_list' %}">Клиенты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'deal_create' %}">Новая сделка</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'api_clients' %}" target="_blank">API</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mb-4">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                     {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
         {% endif %}
@@ -28,6 +104,12 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {% now "Y" %} SalesFlow CRM. Developed for Test Assignment.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -32,6 +32,7 @@ class ClientDetailView(DetailView):
     template_name = 'crm/client_detail.html'
     context_object_name = 'client'
 
+    
 
 class DealCreateView(CreateView):
     model = Deal

@@ -22,3 +22,8 @@ class ClientListView(ListView):
                 Q(email__icontains=query)
             )
         return queryset
+
+class ClientDetailView(DetailView):
+    model = Client
+    template_name = 'crm/client_detail.html'
+    context_object_name = 'client'

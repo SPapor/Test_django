@@ -31,7 +31,9 @@
                 {% for client in clients %}
                 <tr>
                     <td>
-                        <strong>{{ client.name }}</strong>
+                        <a href="{% url 'client_detail' client.pk %}" class="text-decoration-none">
+                            <strong>{{ client.name }}</strong>
+                        </a>
                     </td>
                     <td>{{ client.phone }}</td>
                     <td>{{ client.email }}</td>

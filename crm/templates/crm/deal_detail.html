@@ -1,10 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'crm/base.html' %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                Деталі угоди
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">{{ deal.title }}</h4>
+                <h2 class="text-success my-3">{{ deal.amount }} ₴</h2>
+                
+                <p>
+                    <strong>Клієнт:</strong>
+                    <a href="{% url 'client_detail' deal.client.pk %}">
+                        {{ deal.client.name }}
+                    </a>
+                </p>
+                <p><strong>Статус:</strong> {{ deal.get_status_display }}</p>
+                <p class="text-muted small">
+                    Створено: {{ deal.created_at|date:"d.m.Y H:i" }}
+                </p>
+
+                <hr>
+                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100">
+                    ← Назад
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h3 class="mb-3">Історія нотаток</h3>
+
+        <div class="list-group mb-4">
+            {% for note in deal.notes.all %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1 text-primary">
+                        Нотатка №{{ forloop.counter }}
+                    </h6>
+                    <small class="text-muted">
+                        {{ note.created_at|date:"d.m.Y H:i" }}
+                    </small>
+                </div>
+                <p class="mb-1">
+                    {{ note.text|linebreaksbr }}
+                </p>
+            </div>
+            {% empty %}
+            <div class="alert alert-light text-center">
+                За цією угодою нотаток ще немає.
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body">
+                <form action="{% url 'add_note' deal.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ note_form.text }}
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end">
+                        Додати нотатку
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

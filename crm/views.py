@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
 from .models import Client, Deal
-from .forms import DealForm, ClientForm
+from .forms import DealForm, ClientForm, NoteForm
 
 
 class ClientListView(ListView):
@@ -46,3 +46,23 @@ class ClientCreateView(CreateView):
     form_class = ClientForm
     template_name = 'crm/client_form.html'
     success_url = reverse_lazy('client_list')
+
+class DealDetailView(DetailView):
+    model = Deal
+    template_name = 'crm/deal_detail.html'
+    context_object_name = 'deal'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['note_form'] = NoteForm()
+        return context
+
+def add_note(request, pk):
+    deal = get_object_or_404(Deal, pk=pk)
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.deal = deal
+            note.save()
+    return redirect('deal_detail', pk=pk)

@@ -45,7 +45,9 @@
                         {% for deal in client.deals.all %}
                         <tr>
                             <td>
-                                <strong>{{ deal.title }}</strong>
+                                <a href="{% url 'deal_detail' deal.pk %}" class="text-decoration-none">
+                                    <strong>{{ deal.title }}</strong>
+                                </a>
                             </td>
                             <td>{{ deal.amount }}</td>
                             <td>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Deal, Client
+from .models import Deal, Client, Note
 
 
 class DealForm(forms.ModelForm):
@@ -21,4 +21,16 @@ class ClientForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Напишите заметку...'
+            }),
         }

@@ -1,0 +1,77 @@
+{% extends 'crm/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Інформація про клієнта
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">{{ client.name }}</h3>
+                <p class="card-text">
+                    <strong>Телефон:</strong> {{ client.phone }}<br>
+                    <strong>Email:</strong> {{ client.email }}
+                </p>
+                <p class="text-muted small">
+                    Додано: {{ client.created_at|date:"d.m.Y H:i" }}
+                </p>
+
+                <a href="{% url 'client_list' %}" class="btn btn-outline-secondary w-100">
+                    ← Назад до списку
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Угоди</h2>
+            <a href="{% url 'deal_create' %}" class="btn btn-success">+ Нова угода</a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Назва</th>
+                            <th>Сума</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for deal in client.deals.all %}
+                        <tr>
+                            <td>
+                                <strong>{{ deal.title }}</strong>
+                            </td>
+                            <td>{{ deal.amount }}</td>
+                            <td>
+                                {% if deal.status == 'won' %}
+                                    <span class="badge bg-success">Успішна</span>
+                                {% elif deal.status == 'lost' %}
+                                    <span class="badge bg-danger">Втрачена</span>
+                                {% elif deal.status == 'new' %}
+                                    <span class="badge bg-info">Нова</span>
+                                {% else %}
+                                    <span class="badge bg-warning">У процесі</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ deal.created_at|date:"d.m.Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                Угод поки що немає
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

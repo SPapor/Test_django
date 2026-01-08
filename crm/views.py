@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
-from .models import Client, Deal
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
 
+from .models import Client, Deal
+from .forms import DealForm
 
 class ClientListView(ListView):
     model = Client
@@ -27,3 +30,12 @@ class ClientDetailView(DetailView):
     model = Client
     template_name = 'crm/client_detail.html'
     context_object_name = 'client'
+
+
+class DealCreateView(CreateView):
+    model = Deal
+    form_class = DealForm
+    template_name = 'crm/deal_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('client_detail', kwargs={'pk': self.object.client.pk})

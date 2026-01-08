@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
 from .models import Client, Deal
-from .forms import DealForm
+from .forms import DealForm, ClientForm
+
 
 class ClientListView(ListView):
     model = Client
@@ -39,3 +40,9 @@ class DealCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('client_detail', kwargs={'pk': self.object.client.pk})
+
+class ClientCreateView(CreateView):
+    model = Client
+    form_class = ClientForm
+    template_name = 'crm/client_form.html'
+    success_url = reverse_lazy('client_list')

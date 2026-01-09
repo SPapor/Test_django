@@ -12,13 +12,12 @@ class ClientListView(ListView):
     model = Client
     template_name = 'crm/client_list.html'
     context_object_name = 'clients'
-    paginate_by = 10  # Пагинация по 10 штук
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.GET.get('q')
 
-        # Логика поиска по имени, телефону или email
         if query:
             queryset = queryset.filter(
                 Q(name__icontains=query) |
@@ -27,12 +26,25 @@ class ClientListView(ListView):
             )
         return queryset
 
+
 class ClientDetailView(DetailView):
     model = Client
     template_name = 'crm/client_detail.html'
     context_object_name = 'client'
 
-    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        deals = self.object.deals.all().order_by('-created_at')
+
+        status_param = self.request.GET.get('status')
+
+        if status_param:
+            deals = deals.filter(status=status_param)
+
+        context['deals_list'] = deals
+        context['current_status'] = status_param  # Чтобы подсветить активную кнопку
+        return context
 
 class DealCreateView(CreateView):
     model = Deal

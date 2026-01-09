@@ -43,7 +43,7 @@ class ClientDetailView(DetailView):
             deals = deals.filter(status=status_param)
 
         context['deals_list'] = deals
-        context['current_status'] = status_param  # Чтобы подсветить активную кнопку
+        context['current_status'] = status_param
         return context
 
 class DealCreateView(CreateView):
